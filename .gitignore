@@ -351,3 +351,5 @@ MigrationBackup/
 /src/src.vcxproj.filters
 /src/src.vcxproj
 /src/src.sln
+/docs
+/include
