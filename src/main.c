@@ -5,6 +5,15 @@
 
 #include "main.h"
 
+struct Player {
+    int x;
+    int y;
+    int size;
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+};
+
 int main(int argv, char* argc[]) {
     
     if (SDL_Init(SDL_INIT_VIDEO))
@@ -26,19 +35,36 @@ int main(int argv, char* argc[]) {
         printf("Renderer initialisation error  %s", SDL_GetError());
         return EXIT_FAILURE;
     }
+    int w;
+    int h;
+    SDL_GetWindowSize(window, &w, &h);
 
-    Uint8 r=255, g=0, b=255;
-    SDL_SetRenderDrawColor(renderer,r,g,b,SDL_ALPHA_OPAQUE);
-    drawCircle(150, 0, 0, renderer);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(3000);
+    printf("%d %d", w, h);
+    Player p1 = {10, 10, 10, 255, 0, 0};
+    Player p2 = {w-10, 10, 10, 0, 0, 255};
+    Uint8 r = 0, g = 0, b = 0;
+    while (1) {
+        SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer);
+        p1.x++;
+        p1.y++;
+
+
+        SDL_SetRenderDrawColor(renderer, p1.r, p1.g, p1.b, SDL_ALPHA_OPAQUE);
+        drawCircle(p1.size, p1.x, p1.y, renderer);
+
+        SDL_SetRenderDrawColor(renderer, p2.r, p2.g, p2.b, SDL_ALPHA_OPAQUE);
+        drawCircle(p2.size, p2.x, p2.y, renderer);
+        SDL_RenderPresent(renderer);
+    }
 	
     return 0;
 }
 
+
 void drawCircle(int radius, int x, int y, SDL_Renderer *renderer) {
     for (float i = 0.00f; i < 360.00f; i += 0.01f) {
         float angle = i * M_PI / 180;
-        SDL_RenderDrawPoint(renderer, radius * sin(angle) + x + radius, radius * cos(angle) + y + radius);
+        SDL_RenderDrawPoint(renderer, radius * sin(angle) + x, radius * cos(angle) + y);
     }
 }
