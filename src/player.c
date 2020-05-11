@@ -14,12 +14,29 @@ void UpdatePlayer(PlayerData* player, SDL_Renderer* renderer) {
     UpdatePlayerPosition(player);
     Shoot(player,renderer);
 
+    if (player->bullet != NULL) {
+        if ((player->bullet->y >= 600 || player->bullet->y < 0) || (player->bullet->x >= 800 || player->bullet->x < 0)) {
+            BulletData* bulletOld = player->bullet->old;
+            free(player->bullet);
+            player->bullet = bulletOld;
+        }
+    }
+
+
     BulletData* bullet = player->bullet;
     int i = 0;
+
+
+
     while (bullet != NULL) {
         i++;
         UpdateBullet(bullet);
-        DrawCircle(3, bullet->x, bullet->y, renderer);
+        SDL_Rect rect;
+        rect.x = bullet->x;
+        rect.y = bullet->y;
+        rect.w = 3;
+        rect.h = 3;
+        SDL_RenderFillRect(renderer, &rect);
         DeleteBullet(bullet);
         bullet = bullet->old;
     }
@@ -33,34 +50,34 @@ void UpdatePlayerPosition(PlayerData* player) {
     if (!keyboard_state_array[player->down] && keyboard_state_array[player->up]) {
         if (player->y - player->size > 0) {
             player->y -= player->speed;
-            player->orientation |= ORIENTATION_UP;
-            if(player->orientation ^ ORIENTATION_DOWN)
-                player->orientation ^= ORIENTATION_DOWN;
         }
+            player->orientation = ORIENTATION_UP;
+            if ((player->orientation & ORIENTATION_DOWN) != 0)
+                player->orientation -= ORIENTATION_DOWN;
     }
     if (keyboard_state_array[player->down] && !keyboard_state_array[player->up]) {
         if (player->y + player->size < h) {
             player->y += player->speed;
-            player->orientation |= ORIENTATION_DOWN;
-            if (player->orientation ^ ORIENTATION_UP)
-                player->orientation ^= ORIENTATION_UP;
         }
+            player->orientation = ORIENTATION_DOWN;
+            if ((player->orientation & ORIENTATION_UP) != 0)
+                player->orientation -= ORIENTATION_UP;
     }
     if (!keyboard_state_array[player->left] && keyboard_state_array[player->right]) {
         if (player->x + player->size < w){
             player->x += player->speed;
-            player->orientation |= ORIENTATION_RIGHT;
-            if (player->orientation ^ ORIENTATION_LEFT)
-                player->orientation ^= ORIENTATION_LEFT;
         }
+            player->orientation = ORIENTATION_RIGHT;
+            if ((player->orientation & ORIENTATION_LEFT) != 0)
+                player->orientation -= ORIENTATION_LEFT;
     }
     if (keyboard_state_array[player->left] && !keyboard_state_array[player->right]) {
         if (player->x - player->size > 0){
             player->x -= player->speed;
-            player->orientation |= ORIENTATION_LEFT;
-            if (player->orientation ^ ORIENTATION_RIGHT)
-                player->orientation ^= ORIENTATION_RIGHT;
         }
+            player->orientation = ORIENTATION_LEFT;
+            if ((player->orientation & ORIENTATION_RIGHT) != 0)
+                player->orientation -= ORIENTATION_RIGHT;
     }
 }
 

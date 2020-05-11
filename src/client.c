@@ -36,7 +36,7 @@ void ClientRun(SDL_Renderer* renderer, SDL_Window* window) {
     int quit = 0;
 
     while (!quit) {
-        SDL_Delay(50);
+        SDL_Delay(1000/60);
         SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
 
