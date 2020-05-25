@@ -32,4 +32,5 @@ void UpdatePlayerPosition(PlayerData* player);
 void Shoot(PlayerData* player,SDL_Renderer* renderer);
 void InitBullet(PlayerData* player, BulletData* bullet);
 void DeleteBullet(BulletData* bullet);
+void BulletCollision(PlayerData* player, BulletData* bullet);
 #endif 

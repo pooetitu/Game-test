@@ -105,7 +105,24 @@ void DeleteBullet(BulletData* bullet) {
         if ((bullet->old->y >= h || bullet->old->y < 0) || (bullet->old->x >= w || bullet->old->x < 0)) {
             BulletData* bulletOld = bullet->old->old;
             free(bullet->old);
-            bullet->old = bulletOld;
+            bullet-> old = bulletOld;
+        }
+    }
+}
+
+void BulletCollision(PlayerData* player,BulletData** bullet) {
+    while (*bullet != NULL) {
+            printf("%d\n", &(*bullet));
+        if ((*bullet)->y < player->y + player->size && (*bullet) ->y > player->y - player->size
+            && (*bullet)-> x < player->x + player->size && (*bullet)-> x > player->x - player->size ) {
+            printf("rip");
+            player->size -= 1;
+            BulletData* bulletOld = (*bullet)->old;
+            free((*bullet));
+            (*bullet) = bulletOld;
+        }
+        else {
+            bullet = &(*bullet)->old;
         }
     }
 }

@@ -1,6 +1,6 @@
 #ifndef BULLET_HEADER
 #define BULLET_HEADER
-#define BULLET_SPEED 5;
+#define BULLET_SPEED 8;
 #include <stdlib.h>
 #include <stdio.h>
 

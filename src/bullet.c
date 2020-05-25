@@ -16,3 +16,4 @@ void UpdateBullet(BulletData* bullet) {
         bullet->x+= BULLET_SPEED;
 }
 
+
